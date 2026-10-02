@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="PawBridge - Buy, sell, adopt, rehome and care for pets in one trusted platform.">
+  <title>PawBridge | Pets, Care & Happy Homes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="toast" class="toast"></div>
+
+  <!-- REAL ACCOUNT LOGIN -->
+  <div id="authOverlay" class="overlay hidden">
+    <div class="auth-card">
+      <button class="close-btn" onclick="closeAuth()">×</button>
+      <div class="auth-paw">🐾</div>
+      <span class="eyebrow">PAWBRIDGE ACCOUNT</span>
+      <h2 id="authTitle">Welcome back!</h2>
+      <p id="authSubtitle">Sign in to access your pets, bookings, orders and adoption activity.</p>
+      <div class="auth-tabs">
+        <button id="signinTab" class="auth-tab active" onclick="setAuthMode('signin')">Sign in</button>
+        <button id="signupTab" class="auth-tab" onclick="setAuthMode('signup')">Create account</button>
+      </div>
+      <div id="authNameWrap" class="auth-field hidden">
+        <label>Full name</label>
+        <input id="authName" type="text" autocomplete="name" placeholder="Your full name">
+      </div>
+      <div class="auth-field">
+        <label>Email address</label>
+        <input id="authEmail" type="email" autocomplete="email" placeholder="you@example.com">
+      </div>
+      <div class="auth-field">
+        <label>Password</label>
+        <input id="authPassword" type="password" autocomplete="current-password" placeholder="Enter your password">
+      </div>
+      <div id="authConfirmWrap" class="auth-field hidden">
+        <label>Confirm password</label>
+        <input id="authConfirmPassword" type="password" autocomplete="new-password" placeholder="Re-enter your password">
+      </div>
+      <button id="authSubmitBtn" class="primary full" onclick="submitAuth()">Sign in</button>
+      <button id="forgotPasswordBtn" class="link-btn auth-forgot" onclick="resetPawbridgePassword()">Forgot password?</button>
+      <div class="or"><span>OR</span></div>
+      <button class="google-btn" onclick="loginWithGoogle()">Continue with Google</button>
+      <p id="authSwitchText" class="auth-small">New to PawBridge? <button class="link-btn" onclick="setAuthMode('signup')">Create an account</button></p>
+      <button class="guest-btn" onclick="closeAuth()">Continue browsing as guest</button>
+    </div>
+  </div>
+
+  <!-- SERVICE / PET MODAL -->
+  <div id="modalOverlay" class="overlay hidden">
+    <div class="modal-card">
+      <button class="close-btn" onclick="closeModal()">×</button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="header">
+    <a href="#home" class="brand" onclick="showPage('home')">
+      <div class="brand-mark">🐾</div>
+      <div>
+        <strong>Paw<span>Bridge</span></strong>
+        <small>Pets • Care • Happy Homes</small>
+      </div>
+    </a>
+
+    <nav>
+      <button class="nav-link active" data-page="home" onclick="showPage('home')">Home</button>
+      <button class="nav-link" data-page="services" onclick="showPage('services')">Services</button>
+      <button class="nav-link" data-page="dashboard" onclick="showPage('dashboard')">Dashboard</button>
+      <button class="nav-link" data-page="about" onclick="showPage('about')">About Us</button>
+    </nav>
+
+    <div class="header-actions">
+      <button class="icon-btn" onclick="openSearch()">⌕</button>
+      <button class="login-btn" onclick="openAuth()">Login</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- HOME -->
+    <section id="home" class="page active-page">
+      <section class="hero">
+        <div class="hero-copy">
+          <span class="eyebrow">ONE HOME FOR EVERY PET NEED</span>
+          <h1>Everything your pet needs, <em>under one roof.</em></h1>
+          <p>Buy, sell, adopt, rehome and care for your furry friends — with trusted services, boarding and doorstep delivery.</p>
+          <div class="hero-actions">
+            <button class="primary" onclick="showPage('services')">Explore Services →</button>
+            <button class="secondary" onclick="openAdoption()">Find a Forever Home ♡</button>
+          </div>
+          <div class="trust-row">
+            <div><b>500+</b><span>Pet listings</span></div>
+            <div><b>100+</b><span>Care partners</span></div>
+            <div><b>4.9/5</b><span>Happy families</span></div>
+          </div>
+        </div>
+        <div class="hero-art">
+          <div class="blob blob-a"></div>
+          <div class="blob blob-b"></div>
+          <img src="assets/pets-hero.svg" alt="Happy dog and cat">
+          <div class="floating-card fc-one">💗 <span>Loving homes</span><b>Every pet deserves one</b></div>
+          <div class="floating-card fc-two">✂️ <span>Grooming</span><b>Booked in minutes</b></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">WHAT WE DO</span>
+            <h2>All your pet needs, beautifully connected.</h2>
+          </div>
+          <button class="text-btn" onclick="showPage('services')">View all services →</button>
+        </div>
+        <div class="service-grid">
+          <button class="service-card green" onclick="showPage('services'); scrollToId('marketplace')"><span>🐶</span><h3>Buy & Sell</h3><p>Verified pet listings with health details.</p></button>
+          <button class="service-card peach" onclick="openAdoption()"><span>❤️</span><h3>Adopt & Rehome</h3><p>Help pets find responsible forever homes.</p></button>
+          <button class="service-card lavender" onclick="openService('Grooming & Spa')"><span>✂️</span><h3>Grooming & Spa</h3><p>Make every pet feel fresh and happy.</p></button>
+          <button class="service-card yellow" onclick="openService('Veterinary Care')"><span>🩺</span><h3>Veterinary Care</h3><p>Book convenient pet health consultations.</p></button>
+          <button class="service-card blue" onclick="openService('Boarding & Daycare')"><span>🏡</span><h3>Boarding & Daycare</h3><p>Safe temporary care while you're away.</p></button>
+          <button class="service-card coral" onclick="showPage('services'); scrollToId('delivery')"><span>🛵</span><h3>Home Delivery</h3><p>Food, toys and pet essentials at your door.</p></button>
+        </div>
+      </section>
+
+      <section class="section soft-bg">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">MEET YOUR NEW FRIEND</span>
+            <h2>Featured pets</h2>
+          </div>
+          <button class="text-btn" onclick="showPage('services'); scrollToId('marketplace')">See all pets →</button>
+        </div>
+        <div id="featuredPets" class="pet-grid"></div>
+      </section>
+
+      <section class="section">
+        <div class="why-grid">
+          <div class="why-copy">
+            <span class="eyebrow">WHY PAWBRIDGE?</span>
+            <h2>More than a marketplace. A trusted bridge for pets and people.</h2>
+            <p>We bring pet owners, families and care professionals together so you don't have to jump between multiple apps and service providers.</p>
+          </div>
+          <div class="benefit-list">
+            <div class="benefit"><i>✓</i><div><b>Verified listings</b><p>Identity and basic pet-health information can be verified.</p></div></div>
+            <div class="benefit"><i>♡</i><div><b>Responsible rehoming</b><p>Adoption requests help match pets with suitable homes.</p></div></div>
+            <div class="benefit"><i>₹</i><div><b>Reasonable pricing</b><p>Simple, transparent service and delivery charges.</p></div></div>
+            <div class="benefit"><i>24</i><div><b>Care when you're away</b><p>Boarding and daycare for short-term needs.</p></div></div>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <!-- SERVICES -->
+    <section id="services" class="page">
+      <section class="page-hero">
+        <div>
+          <span class="eyebrow">PAWBRIDGE SERVICES</span>
+          <h1>Everything your pet needs.</h1>
+          <p>Choose a service below and complete a simple booking or request form.</p>
+        </div>
+        <div class="mini-paw">🐾</div>
+      </section>
+
+      <section class="section compact">
+        <div class="category-pills">
+          <button class="pill active" onclick="filterServices('all', this)">All</button>
+          <button class="pill" onclick="filterServices('market', this)">Buy & Sell</button>
+          <button class="pill" onclick="filterServices('care', this)">Pet Care</button>
+          <button class="pill" onclick="filterServices('stay', this)">Boarding</button>
+          <button class="pill" onclick="filterServices('delivery', this)">Delivery</button>
+        </div>
+      </section>
+
+      <section id="marketplace" class="section compact">
+        <div class="section-head">
+          <div><span class="eyebrow">MARKETPLACE</span><h2>Buy & Sell Pets</h2><p class="muted">Browse pets or list a pet for responsible sale/rehome. Every new listing is submitted for PawBridge review.</p></div>
+          <button class="primary" onclick="openSellPet()">＋ Sell / Rehome a Pet</button>
+        </div>
+        <div class="filter-box">
+          <input id="petSearch" oninput="renderPets()" placeholder="Search breed, pet or location...">
+          <select id="petType" onchange="renderPets()"><option value="all">All pets</option><option value="Dog">Dogs</option><option value="Cat">Cats</option><option value="Bird">Birds</option><option value="Rabbit">Rabbits</option></select>
+          <select id="petGender" onchange="renderPets()"><option value="all">Any gender</option><option value="Male">Male</option><option value="Female">Female</option></select>
+        </div>
+        <div id="allPets" class="pet-grid"></div>
+      </section>
+
+      <section class="section soft-bg service-feature">
+        <div class="feature-illustration"><img src="assets/pet-care.svg" alt="Pet care illustration"></div>
+        <div>
+          <span class="eyebrow">ADOPT & REHOME</span>
+          <h2>Give a pet a second chance at a loving home. ❤️</h2>
+          <p>If an owner can no longer care for a pet, PawBridge can help create a structured rehoming request and connect suitable families.</p>
+          <button class="primary" onclick="openAdoption()">Start Adoption Request</button>
+        </div>
+      </section>
+
+      <section class="section compact">
+        <div class="section-head"><div><span class="eyebrow">CARE & WELLNESS</span><h2>Book pet care services</h2></div></div>
+        <div class="booking-grid">
+          <button class="booking-card" onclick="openService('Grooming & Spa')"><span>🛁</span><h3>Grooming & Spa</h3><p>Bath, haircut, nail trim & spa. Home-service request available.</p><b>Book now →</b></button>
+          <button class="booking-card" onclick="openService('Veterinary Care')"><span>🩺</span><h3>Veterinary Care</h3><p>Schedule a basic consultation request.</p><b>Book now →</b></button>
+          <button class="booking-card" onclick="openService('Boarding & Daycare')"><span>🏨</span><h3>Boarding & Daycare</h3><p>Short-term care when you're away.</p><b>Book now →</b></button>
+        </div>
+      </section>
+
+      <section id="delivery" class="section delivery-section">
+        <div class="delivery-copy">
+          <span class="eyebrow">PAWBRIDGE DELIVERY</span>
+          <h2>Pet essentials, delivered to your doorstep. 🛵</h2>
+          <p>Prototype marketplace inspired by food-delivery apps: browse, add to cart, choose a payment method and track your order.</p>
+          <button class="primary" onclick="openDelivery()">Shop Essentials</button>
+        </div>
+        <img src="assets/delivery.svg" alt="Pet delivery">
+      </section>
+    </section>
+
+    <!-- DASHBOARD -->
+    <section id="dashboard" class="page">
+      <section class="page-hero dashboard-hero">
+        <div class="dashboard-user">
+          <img id="dashboardUserPhoto" class="profile-photo" style="display:none" alt="Profile">
+          <div>
+            <span class="eyebrow">MY PAWBRIDGE</span>
+            <h1>Hello, <span id="dashboardUserName">pet parent</span>! 👋</h1>
+            <p id="dashboardUserEmail">Sign in to manage your PawBridge account.</p>
+          </div>
+        </div>
+        <div>
+          <button class="secondary" onclick="openAuth()">Sign in / Change account</button>
+          <button class="secondary" onclick="logoutUser()" style="margin-left:7px">Logout</button>
+        </div>
+      </section>
+      <section class="section compact">
+        <div class="stats-grid">
+          <div class="stat"><span>🐾</span><b id="statPets">0</b><small>My Pets</small></div>
+          <div class="stat"><span>📦</span><b id="statOrders">0</b><small>Orders</small></div>
+          <div class="stat"><span>📅</span><b id="statBookings">0</b><small>Bookings</small></div>
+          <div class="stat"><span>❤️</span><b id="statAdoptions">0</b><small>Adoption Requests</small></div>
+        </div>
+      </section>
+      <section class="section compact">
+        <div class="dashboard-grid">
+          <div class="panel">
+            <div class="panel-head"><h3>Recent orders</h3><span>View all</span></div>
+            <div id="ordersList"></div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><h3>Service bookings</h3><span>View all</span></div>
+            <div id="bookingsList"></div>
+          </div>
+        </div>
+
+        <div class="dashboard-grid lower">
+          <div class="panel">
+            <div class="panel-head"><h3>My pets</h3><button class="text-btn" onclick="openAddPet()">+ Add pet</button></div>
+            <div id="myPetsList" class="my-pets"></div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><h3>Adoption requests</h3><span>Track requests</span></div>
+            <div id="adoptionsList"></div>
+          </div>
+        </div>
+
+        <div class="dashboard-grid lower">
+          <div class="panel">
+            <div class="panel-head"><h3>My pet listings</h3><button class="text-btn" onclick="showPage('services');scrollToId('marketplace')">+ Sell / Rehome</button></div>
+            <div id="listingsList"></div>
+          </div>
+          <div class="panel dashboard-tip">
+            <span class="eyebrow">PAWBRIDGE CARE</span>
+            <h3>Your pet journey, all in one place. 🐾</h3>
+            <p>Manage your pets, track service bookings, review orders and follow adoption requests from your personal dashboard.</p>
+            <button class="primary" onclick="showPage('services')">Explore services →</button>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="page">
+      <section class="about-hero">
+        <div><span class="eyebrow">ABOUT PAWBRIDGE</span><h1>Building a kinder, simpler pet-care experience.</h1><p>Our vision is to connect pets, people and trusted services through one friendly digital platform.</p></div>
+        <img src="assets/about-pets.svg" alt="Pets at home">
+      </section>
+      <section class="section">
+        <div class="mission-grid">
+          <div class="mission-card"><span>01</span><h3>Our mission</h3><p>Make pet ownership safer, easier and more convenient by bringing marketplace, care and delivery services together.</p></div>
+          <div class="mission-card"><span>02</span><h3>Our promise</h3><p>Promote responsible pet transactions and rehoming while making everyday pet care accessible and transparent.</p></div>
+          <div class="mission-card"><span>03</span><h3>Our vision</h3><p>A future where every pet can find a caring home and every pet parent can access dependable support.</p></div>
+        </div>
+      </section>
+      <section class="section soft-bg">
+        <div class="section-head"><div><span class="eyebrow">THE PAWBRIDGE DIFFERENCE</span><h2>One platform. Many moments of care.</h2></div></div>
+        <div class="timeline">
+          <div><b>Discover</b><span>Find pets, services and essentials.</span></div>
+          <div><b>Connect</b><span>Connect with owners and care partners.</span></div>
+          <div><b>Book</b><span>Schedule grooming, vet or boarding.</span></div>
+          <div><b>Care</b><span>Keep your pet happy, healthy and loved.</span></div>
+        </div>
+      </section>
+      <section class="section contact-strip"><div><span class="eyebrow">HAVE A QUESTION?</span><h2>Let's make pet care better together.</h2></div><button class="primary" onclick="showToast('Thank you! Our PawBridge team will contact you.')">Contact PawBridge</button></section>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-brand"><div class="brand-mark">🐾</div><b>PawBridge</b><p>Your trusted partner for pets, care & happy homes.</p></div>
+    <div><b>Explore</b><a onclick="showPage('home')">Home</a><a onclick="showPage('services')">Services</a><a onclick="showPage('dashboard')">Dashboard</a></div>
+    <div><b>Services</b><a onclick="openAdoption()">Adoption</a><a onclick="openService('Grooming & Spa')">Grooming</a><a onclick="openService('Boarding & Daycare')">Boarding</a></div>
+    <div><b>Support</b><a onclick="showToast('Support: support@pawbridge.demo')">Contact</a><a onclick="showToast('Privacy page can be added in the next phase.')">Privacy</a></div>
+    <div class="copyright">© 2026 PawBridge • Prototype for academic demonstration</div>
+  </footer>
+
+  <script type="module" src="firebase-config.js"></script>
+  <script type="module" src="firebase-auth.js"></script>
+  <script type="module" src="firebase-data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

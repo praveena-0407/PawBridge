@@ -1,0 +1,60 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function ownsExisting() {
+      return signedIn() && resource.data.uid == request.auth.uid;
+    }
+
+    function ownsNew() {
+      return signedIn() && request.resource.data.uid == request.auth.uid;
+    }
+
+    match /users/{userId} {
+      allow read, create, update, delete: if signedIn() && request.auth.uid == userId;
+    }
+
+    match /userPets/{petId} {
+      allow read, update, delete: if ownsExisting();
+      allow create: if ownsNew();
+    }
+
+    match /serviceBookings/{bookingId} {
+      allow read, update, delete: if ownsExisting();
+      allow create: if ownsNew();
+    }
+
+    match /orders/{orderId} {
+      allow read, update, delete: if ownsExisting();
+      allow create: if ownsNew();
+    }
+
+    match /adoptionRequests/{requestId} {
+      allow read, update, delete: if ownsExisting();
+      allow create: if ownsNew();
+    }
+
+    match /petListings/{listingId} {
+      allow read: if signedIn();
+      allow create: if ownsNewSeller();
+      allow update, delete: if ownsExistingSeller();
+    }
+
+    function ownsNewSeller() {
+      return signedIn() && request.resource.data.sellerUid == request.auth.uid;
+    }
+
+    function ownsExistingSeller() {
+      return signedIn() && resource.data.sellerUid == request.auth.uid;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
